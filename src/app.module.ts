@@ -9,6 +9,9 @@ import { MulterModule } from '@nestjs/platform-express/multer';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 // import { JwtStrategy } from './auth/jwt.strategy';
+import { QuizController } from './quiz/quiz.controller';
+import { QuizModule } from './quiz/quiz.module';
+import { QuizService } from './quiz/quiz.service';
 
 @Module({
   imports: [
@@ -24,10 +27,12 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.EXPIRES_IN },
     }),
+    QuizModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, QuizController],
   providers: [
     AppService,
+    QuizService,
     {
       provide: 'REDIS',
       useFactory: () => {
