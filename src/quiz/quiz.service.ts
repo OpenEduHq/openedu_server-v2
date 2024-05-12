@@ -65,7 +65,12 @@ export class QuizService {
     }
   }
 
-  async checkAnswer(questionId: string, answer: { answer: string }) {
+  async checkAnswer(
+    questionId: string,
+    userId: string,
+    answer: { answer: string },
+  ) {
+    console.log(questionId, userId, answer);
     const question = await this.prisma.question.findUnique({
       where: {
         id: questionId,

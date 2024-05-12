@@ -29,7 +29,7 @@ import { AuthModule } from './auth/auth.module';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.EXPIRES_IN },
+      signOptions: { expiresIn: process.env.EXPIRES_IN || 604800 },
     }),
   ],
   controllers: [AppController, AuthController, QuizController],

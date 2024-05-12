@@ -1,5 +1,17 @@
-import { Body, Controller, Get, Header, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { QuizService } from './quiz.service';
+import { Public } from 'src/custom.decorator/custom.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import RetrieveInfoFromRequest from 'src/handlers/retriveInfoFromRequest.global';
 
 /*
  * UPDATE THE WAY IT OPERATES
@@ -11,18 +23,21 @@ import { QuizService } from './quiz.service';
 export class QuizController {
   constructor(private quiz: QuizService) {}
 
+  @Public()
   @Get()
   getAllQuizzes() {
     return this.quiz.getAllQuizzes();
   }
 
   // add reqest thresholder of 1m
+  @Public()
   @Get('random/:noOfQuestions')
   getRandomQuestion(@Param('noOfQuestions') noOfQuestions: string) {
     return this.quiz.getRandomQuestion(noOfQuestions);
   }
 
   // add reqest thresholder of 1m
+  @Public()
   @Get(':quizId/:noOfQuestions')
   getQuestions(
     @Param('quizId') quizId: string,
@@ -34,11 +49,13 @@ export class QuizController {
   // add reqest thresholder of 1m
   // Auth Guard
   @Post('check/:questionId')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   checkAnswer(
     @Param('questionId') questionId: string,
+    @Req() request,
     @Body() answer: { answer: string },
   ) {
-    return this.quiz.checkAnswer(questionId, answer);
+    const userId = RetrieveInfoFromRequest(request).id;
+    return this.quiz.checkAnswer(questionId, userId, answer);
   }
 }
