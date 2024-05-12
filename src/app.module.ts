@@ -1,6 +1,8 @@
 import { Module, Scope } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
@@ -8,16 +10,18 @@ import Redis from 'ioredis';
 import { MulterModule } from '@nestjs/platform-express/multer';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-// import { JwtStrategy } from './auth/jwt.strategy';
+import { JwtStrategy } from './auth/jwt.strategy';
 import { QuizController } from './quiz/quiz.controller';
-import { QuizModule } from './quiz/quiz.module';
 import { QuizService } from './quiz/quiz.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     PrismaModule,
     TerminusModule,
     HttpModule,
+    AuthModule,
     MulterModule.register({
       dest: './uploads',
     }),
@@ -27,11 +31,11 @@ import { QuizService } from './quiz/quiz.service';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.EXPIRES_IN },
     }),
-    QuizModule,
   ],
-  controllers: [AppController, QuizController],
+  controllers: [AppController, AuthController, QuizController],
   providers: [
     AppService,
+    AuthService,
     QuizService,
     {
       provide: 'REDIS',
@@ -42,8 +46,7 @@ import { QuizService } from './quiz/quiz.service';
       },
       scope: Scope.DEFAULT,
     },
-    // JwtStrategy,
+    JwtStrategy,
   ],
-  // exports: [AuthService],
 })
 export class AppModule {}
