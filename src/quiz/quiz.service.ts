@@ -6,6 +6,10 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {} from '@prisma/client'; // Import the questionOrderByWithRelationInput type
+import {
+  correctModalResponses,
+  incorrectModalResponses,
+} from 'src/static/modal-responses';
 
 @Injectable()
 export class QuizService {
@@ -73,9 +77,21 @@ export class QuizService {
     }
 
     if (question.answers == answer.answer) {
-      return true;
+      return {
+        status: true,
+        message:
+          correctModalResponses[
+            Math.floor(Math.random() * correctModalResponses.length)
+          ],
+      };
     } else {
-      return false;
+      return {
+        status: false,
+        message:
+          incorrectModalResponses[
+            Math.floor(Math.random() * incorrectModalResponses.length)
+          ],
+      };
     }
   }
 }
