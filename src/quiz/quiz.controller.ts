@@ -49,7 +49,8 @@ export class QuizController {
   // add reqest thresholder of 1m
   // Auth Guard
   @Post('check/:questionId')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
+  @Public()
   checkAnswer(
     @Param('questionId') questionId: string,
     @Req() request,

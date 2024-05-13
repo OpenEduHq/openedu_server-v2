@@ -63,7 +63,7 @@ export class AuthService {
       sub: (user as { id: string }).id,
       email: (user as { email: string }).email,
       token: (user as { token: string }).token,
-      password: (user as { password: string }).password,
+      userName: (user as { userName: string }).userName,
     };
 
     const access_token: string = this.jwtService.sign(payload) || '';
@@ -76,6 +76,7 @@ export class AuthService {
   }
 
   async signIn(body: SignInDto, response) {
+    console.log('body', body);
     const { email, password } = body;
 
     if (!email || !password) {
@@ -107,7 +108,7 @@ export class AuthService {
       sub: (user as { id: string }).id,
       email: (user as { email: string }).email,
       token: (user as { token: string }).token,
-      password: (user as { password: string }).password,
+      userName: (user as { userName: string }).userName,
     };
 
     const access_token: string = this.jwtService.sign(payload) || '';
