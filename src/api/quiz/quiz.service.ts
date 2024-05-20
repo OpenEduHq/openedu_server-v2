@@ -10,59 +10,62 @@ import {
   correctModalResponses,
   incorrectModalResponses,
 } from 'src/static/modal-responses';
+import handleErrors from 'src/handlers/handleErrors.global';
 
 @Injectable()
 export class QuizService {
   constructor(private prisma: PrismaService) {}
 
   getAllQuizzes() {
-    try {
-      return this.prisma.quiz.findMany({});
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Internal server error');
-    }
+    return this.prisma.quiz.findMany({}).catch((error) => {
+      handleErrors(error);
+    });
   }
 
   async getRandomQuestion(noOfQuestions: string) {
     // ! Add extensive checks on noOfQuestions to prevent SQL Injection
-    const results = await this.prisma.$queryRawUnsafe(
-      // DO NOT pass in or accept user input here
-      `SELECT * FROM "question" ORDER BY RANDOM() LIMIT $1;`,
-      parseInt(noOfQuestions),
-    );
+    const results = await this.prisma
+      .$queryRawUnsafe(
+        // DO NOT pass in or accept user input here
+        `SELECT * FROM "question" ORDER BY RANDOM() LIMIT $1;`,
+        parseInt(noOfQuestions),
+      )
+      .catch((error) => {
+        handleErrors(error);
+      });
 
     return results;
   }
 
   async getQuestions(quizId: string, noOfQuestions: string) {
-    try {
-      const quiz = await this.prisma.quiz.findUnique({
+    const quiz = await this.prisma.quiz
+      .findUnique({
         where: {
           id: quizId,
         },
+      })
+      .catch((error) => {
+        handleErrors(error);
       });
 
-      if (!quiz) {
-        throw new BadRequestException(`Quiz with ${quizId} not present`);
-      }
+    if (!quiz) {
+      throw new BadRequestException(`Quiz with ${quizId} not present`);
+    }
 
-      const results = await this.prisma.$queryRawUnsafe(
+    const results = await this.prisma
+      .$queryRawUnsafe(
         // DO NOT pass in or accept user input here
         `SELECT * FROM "question" WHERE "quizId" = '${quizId}' ORDER BY RANDOM() LIMIT ${noOfQuestions};`,
-      );
+      )
+      .catch((error) => {
+        handleErrors(error);
+      });
 
-      if (!results) {
-        throw new InternalServerErrorException(
-          'Something went wrong, try again',
-        );
-      }
-
-      return results;
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Internal Server Error');
+    if (!results) {
+      throw new InternalServerErrorException('Something went wrong, try again');
     }
+
+    return results;
   }
 
   async checkAnswer(
@@ -70,12 +73,16 @@ export class QuizService {
     userId: string,
     answer: { answer: string },
   ) {
-    console.log(questionId, userId, answer);
-    const question = await this.prisma.question.findUnique({
-      where: {
-        id: questionId,
-      },
-    });
+    // console.log(questionId, userId, answer);
+    const question = await this.prisma.question
+      .findUnique({
+        where: {
+          id: questionId,
+        },
+      })
+      .catch((error) => {
+        handleErrors(error);
+      });
 
     if (!question) {
       throw new BadRequestException(`Question with ${questionId} not present`);
