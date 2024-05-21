@@ -3,6 +3,8 @@ import handleErrors from 'src/handlers/handleErrors.global';
 import RetrieveInfoFromRequest from 'src/handlers/retriveInfoFromRequest.global';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDto } from './dto/user.dto';
+import { error } from 'console';
+import { SettingsDto } from './dto/settings.dto';
 
 @Injectable()
 export class UsersService {
@@ -55,5 +57,68 @@ export class UsersService {
       .catch((error) => {
         handleErrors(error);
       });
+  }
+
+  async fetchLinkedinData(request: any) {
+    const userId = RetrieveInfoFromRequest(request).id;
+
+    const user = await this.prisma.user
+      .findUnique({
+        where: {
+          id: userId,
+        },
+      })
+      .catch((error) => {
+        handleErrors(error);
+      });
+
+    //! make api call, store it in db and return data
+    return (user as unknown as any).LinkdinId;
+  }
+
+  async fetchGithubData(request: any) {
+    const userId = RetrieveInfoFromRequest(request).id;
+
+    const user = await this.prisma.user
+      .findUnique({
+        where: {
+          id: userId,
+        },
+      })
+      .catch((error) => {
+        handleErrors(error);
+      });
+    //! make api call, store it in db and return data
+    return (user as unknown as any).githubId;
+  }
+
+  async myProgress(request: any) {
+    const userId = RetrieveInfoFromRequest(request).id;
+
+    // const user = await this.prisma.user
+    //   .findUnique({
+    //     where: {
+    //       id: userId,
+    //     },
+    //     include: {
+    //       courses: {
+    //         include: {
+    //           courses: true,
+    //           quizzes: true,
+    //           projects: true,
+    //         },
+    //       },
+    //     },
+    //   })
+    //   .catch((error) => {
+    //     handleErrors(error);
+    //   });
+
+    // return user;
+    throw new Error('Not implemented');
+  }
+
+  updateSettings(request: any, dto: SettingsDto) {
+    throw new Error('Method not implemented.');
   }
 }
