@@ -15,6 +15,9 @@ import sendEmail from 'src/handlers/email.global';
 import Redis from 'ioredis';
 import { emit } from 'process';
 import RetrieveInfoFromRequest from 'src/handlers/retriveInfoFromRequest.global';
+import * as bcrypt from 'bcrypt';
+import crypto from 'crypto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -63,8 +66,9 @@ export class AuthService {
       throw new ForbiddenException('Invalid email format');
     }
 
-    //! @Himasnhu-AT Improve token generation logic
-    const token = Math.random().toString(36).substring(2);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const token = crypto.randomBytes(32).toString('hex');
+
     let user = await this.prisma.user
       .create({
         data: {
@@ -72,7 +76,7 @@ export class AuthService {
           role: 'USER',
           name,
           email,
-          password,
+          password: hashedPassword,
           userName,
         },
       })
@@ -81,7 +85,7 @@ export class AuthService {
       });
 
     //! @Himasnhu-AT Improve verification Code generation logic
-    const verificationCode = Math.random().toString(36).substring(2);
+    const verificationCode = Math.random().toString(8).substring(2);
 
     try {
       await this.redisClient.set(email, verificationCode);
@@ -140,8 +144,7 @@ export class AuthService {
         handleErrors(error);
       });
 
-    //! @Himasnhu-AT Improve verification Code generation logic
-    const verificationCode = Math.random().toString(36).substring(2);
+    const verificationCode = Math.random().toString(8).substring(2);
 
     if (await this.redisClient.get(email)) {
       await this.redisClient.del(email);
@@ -173,13 +176,13 @@ export class AuthService {
       throw new ForbiddenException('Wrong verification Code.');
     }
 
-    //! @Himasnhu-AT Hash this password
+    const hashedPassword = await bcrypt.hash(body.newPassword, 10);
     await this.prisma.user.update({
       where: {
         email: body.email,
       },
       data: {
-        password: body.newPassword,
+        password: hashedPassword,
       },
     });
 
@@ -203,6 +206,7 @@ export class AuthService {
         handleErrors(error);
       });
 
+    const hashedPassword = await bcrypt.hash(dto.newPassword, 10);
     if (dto.oldPassword != (user as unknown as any).password) {
       await this.prisma.user
         .update({
@@ -211,7 +215,7 @@ export class AuthService {
             email,
           },
           data: {
-            password: dto.newPassword,
+            password: hashedPassword,
           },
         })
         .catch((error) => {
@@ -273,7 +277,7 @@ export class AuthService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    if (user.password !== password) {
+    if (bcrypt.compare(password, (user as { password: string }).password)) {
       throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
     }
 
