@@ -15,6 +15,7 @@ import { QuizController } from './api/quiz/quiz.controller';
 import { QuizService } from './api/quiz/quiz.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './api/auth/auth.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AuthModule } from './api/auth/auth.module';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.EXPIRES_IN || 604800 },
     }),
+    ProjectModule,
   ],
   controllers: [AppController, AuthController, QuizController],
   providers: [
