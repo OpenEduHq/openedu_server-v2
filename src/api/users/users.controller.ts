@@ -42,6 +42,19 @@ export class UsersController {
     return this.usersService.updateUserDetails(request, dto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('getSettings')
+  getSettings(@Req() request) {
+    return this.usersService.getUserSettings(request);
+  }
+
+  // // TODO update settings
+  @UseGuards(AuthGuard('jwt'))
+  @Put('updateSettings')
+  updateSettings(@Req() request, @Body() dto: SettingsDto) {
+    return this.usersService.updateSettings(request, dto);
+  }
+
   // TODO fetching linkedin data using linkedin api
   @UseGuards(AuthGuard('jwt'))
   @Put('fetchLinkedinData')
@@ -61,12 +74,5 @@ export class UsersController {
   @Put('myProgress')
   myProgress(@Req() request) {
     return this.usersService.myProgress(request);
-  }
-
-  // TODO update settings
-  @UseGuards(AuthGuard('jwt'))
-  @Put('updateSettings')
-  updateSettings(@Req() request, @Body() dto: SettingsDto) {
-    return this.usersService.updateSettings(request, dto);
   }
 }

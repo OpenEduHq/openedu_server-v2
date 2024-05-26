@@ -13,8 +13,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './api/auth/jwt.strategy';
 import { QuizController } from './api/quiz/quiz.controller';
 import { QuizService } from './api/quiz/quiz.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './api/auth/auth.module';
+import { UsersModule } from './api/users/users.module';
 
 @Module({
   imports: [
@@ -22,6 +22,7 @@ import { AuthModule } from './api/auth/auth.module';
     TerminusModule,
     HttpModule,
     AuthModule,
+    UsersModule,
     MulterModule.register({
       dest: './uploads',
     }),

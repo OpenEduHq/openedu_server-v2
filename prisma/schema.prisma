@@ -14,28 +14,67 @@ datasource db {
 }
 
 model User {
-  id         String        @id @default(uuid())
-  email      String        @unique
-  userName   String        @unique
-  name       String
-  isVerified Boolean       @default(false)
-  password   String
-  token      String?
-  tokenCli   String?
-  role       Roles
-  githubId   String?
-  linkdinId  String?
-  portfolio  String?
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  courses    UserCourse[]
-  projects   UserProject[]
-  quizzes    UserQuiz[]
+  id              String  @id @default(uuid())
+  email           String  @unique
+  userName        String  @unique
+  name            String
+  isVerified      Boolean @default(false)
+  password        String
+  bio             String?
+  image           String?
+  githubId        String?
+  linkdinId       String?
+  portfolio       String?
+  portfolioSiteId String?
+
+  token    String?
+  tokenCli String?
+  role     Roles
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  courses        UserCourse[]
+  projects       UserProject[]
+  quizzes        UserQuiz[]
+  settings       UserSettings  @relation(fields: [userSettingsId], references: [id])
+  userSettingsId String
 }
 
 enum Roles {
   USER
   ADMIN
+}
+
+model UserSettings {
+  id                String             @id @default(uuid())
+  emailSubscription EmailsSubscription @relation(fields: [emailsSubscriptionId], references: [id])
+  publicProfile     Boolean            @default(true)
+  publicPortfolio   Boolean            @default(true)
+  publicBio         Boolean            @default(true)
+  publicEmail       Boolean            @default(true)
+  publicGithub      Boolean            @default(true)
+  publicLinkdin     Boolean            @default(true)
+  publicProjects    Boolean            @default(true)
+  publicCourses     Boolean            @default(true)
+
+  emailsSubscriptionId String
+
+  User      User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmailsSubscription {
+  id               String  @id @default(uuid())
+  courseUpdates    Boolean @default(true)
+  quizUpdates      Boolean @default(true)
+  announcements    Boolean @default(true)
+  SecurityFeatures Boolean @default(true)
+  ProductUpgrades  Boolean @default(true)
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  UserSettings UserSettings[]
 }
 
 model UserCourse {
@@ -103,4 +142,11 @@ model Question {
   link        String
   quiz        Quiz?   @relation(fields: [quizId], references: [id])
   quizId      String?
+}
+
+model PortfolioSiteIds {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  siteSubUrl  String
 }

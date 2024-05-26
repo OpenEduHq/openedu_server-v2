@@ -13,7 +13,6 @@ import SignUpDto from './dto/signup.dto';
 import { Public } from 'src/custom.decorator/custom.decorator';
 import SignInDto from './dto/signin.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { request } from 'http';
 import RetrieveInfoFromRequest from 'src/handlers/retriveInfoFromRequest.global';
 
 @Controller('auth')
