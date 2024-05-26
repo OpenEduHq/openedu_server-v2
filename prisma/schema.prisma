@@ -14,20 +14,23 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  userName   String   @unique
+  id         String        @id @default(uuid())
+  email      String        @unique
+  userName   String        @unique
   name       String
-  isVerified Boolean  @default(false)
+  isVerified Boolean       @default(false)
   password   String
   token      String?
   tokenCli   String?
   role       Roles
   githubId   String?
-  LinkdinId  String?
+  linkdinId  String?
   portfolio  String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  courses    UserCourse[]
+  projects   UserProject[]
+  quizzes    UserQuiz[]
 }
 
 enum Roles {
@@ -35,21 +38,69 @@ enum Roles {
   ADMIN
 }
 
-model quiz {
-  id        String     @id @default(cuid())
-  title     String
-  questions question[]
+model UserCourse {
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+  progress Int    @default(0)
+  user     User   @relation(fields: [userId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
 }
 
-model question {
+model UserProject {
+  id        String  @id @default(uuid())
+  userId    String
+  projectId String
+  progress  Int     @default(0)
+  user      User    @relation(fields: [userId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, projectId])
+}
+
+model UserQuiz {
+  id       String @id @default(uuid())
+  userId   String
+  quizId   String
+  progress Int    @default(0)
+  user     User   @relation(fields: [userId], references: [id])
+  quiz     Quiz   @relation(fields: [quizId], references: [id])
+
+  @@unique([userId, quizId])
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  users       UserCourse[]
+}
+
+model Project {
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  users       UserProject[]
+}
+
+model Quiz {
+  id        String     @id @default(cuid())
+  title     String
+  questions Question[]
+  users     UserQuiz[]
+}
+
+model Question {
   id          String  @id @default(cuid())
   question    String
   answers     String
   distractor1 String
   distractor2 String
   distractor3 String
-  Explanation String
-  Link        String
-  quiz        quiz?   @relation(fields: [quizId], references: [id])
+  explanation String
+  link        String
+  quiz        Quiz?   @relation(fields: [quizId], references: [id])
   quizId      String?
 }

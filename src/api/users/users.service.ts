@@ -50,7 +50,7 @@ export class UsersService {
         },
         data: {
           githubId: dto.githubId,
-          LinkdinId: dto.LinkdinId,
+          linkdinId: dto.LinkdinId,
           portfolio: dto.portfolio,
         },
       })
