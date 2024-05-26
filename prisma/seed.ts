@@ -22,7 +22,7 @@ async function main() {
   const securityQuiz = Quizzes.securityQuiz;
   const sqlQuiz = Quizzes.sqlQuiz;
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: GitQuiz.title,
       questions: {
@@ -34,8 +34,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -43,7 +43,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: accessibilityQuiz.title,
       questions: {
@@ -55,8 +55,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -64,7 +64,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: agileQuiz.title,
       questions: {
@@ -76,8 +76,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -85,7 +85,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: cloudComputingQuiz.title,
       questions: {
@@ -97,8 +97,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -106,7 +106,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: cssQuiz.title,
       questions: {
@@ -118,8 +118,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -127,7 +127,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: devopsQuiz.title,
       questions: {
@@ -139,8 +139,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -148,7 +148,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: generalCSQuiz.title,
       questions: {
@@ -160,8 +160,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -169,7 +169,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: htmlQuiz.title,
       questions: {
@@ -181,8 +181,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -190,7 +190,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: informationTechnologyQuiz.title,
       questions: {
@@ -202,8 +202,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -211,7 +211,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: javascriptQuiz.title,
       questions: {
@@ -223,8 +223,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -232,7 +232,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: linuxQuiz.title,
       questions: {
@@ -244,8 +244,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -253,7 +253,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: pythonQuiz.title,
       questions: {
@@ -265,8 +265,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -274,7 +274,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: qualityAssuranceQuiz.title,
       questions: {
@@ -286,8 +286,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -295,7 +295,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: regexQuiz.title,
       questions: {
@@ -307,8 +307,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -316,7 +316,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: securityQuiz.title,
       questions: {
@@ -328,8 +328,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },
@@ -337,7 +337,7 @@ async function main() {
     },
   });
 
-  await prisma.quiz.create({
+  await prisma.Quiz.create({
     data: {
       title: sqlQuiz.title,
       questions: {
@@ -349,8 +349,8 @@ async function main() {
               distractor1: question.Distractor1,
               distractor2: question.Distractor2,
               distractor3: question.Distractor3,
-              Explanation: question.Explanation,
-              Link: question.Link,
+              explanation: question.Explanation,
+              link: question.Link,
             };
           }),
         },

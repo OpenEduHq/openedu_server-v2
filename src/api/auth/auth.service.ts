@@ -78,6 +78,13 @@ export class AuthService {
           email,
           password: hashedPassword,
           userName,
+          settings: {
+            create: {
+              emailSubscription: {
+                create: {},
+              },
+            },
+          },
         },
       })
       .catch((error) => {

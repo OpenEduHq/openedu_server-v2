@@ -2,8 +2,6 @@ import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './custom.decorator/custom.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { ExecutionContext } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken'; // Import the 'jwt' module
 import RetrieveInfoFromRequest from './handlers/retriveInfoFromRequest.global';
 
 @Controller()
