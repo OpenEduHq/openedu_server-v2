@@ -1,5 +1,27 @@
 import { IsBoolean, IsNotEmpty } from 'class-validator';
 
+export class EmailsSubscription {
+  @IsBoolean()
+  @IsNotEmpty()
+  courseUpdates: Boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  quizUpdates: Boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  announcements: Boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  SecurityFeatures: Boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  ProductUpgrades: Boolean;
+}
+
 export class SettingsDto {
   @IsNotEmpty()
   @IsBoolean()
@@ -36,26 +58,4 @@ export class SettingsDto {
   @IsNotEmpty()
   @IsBoolean()
   publicCourses: Boolean;
-}
-
-export class EmailsSubscription {
-  @IsBoolean()
-  @IsNotEmpty()
-  courseUpdates: Boolean;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  quizUpdates: Boolean;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  announcements: Boolean;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  SecurityFeatures: Boolean;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  ProductUpgrades: Boolean;
 }

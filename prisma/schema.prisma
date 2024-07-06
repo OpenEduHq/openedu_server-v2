@@ -27,8 +27,8 @@ model User {
   portfolio       String?
   portfolioSiteId String?
 
-  token    String?
-  tokenCli String?
+  token    String @default(cuid())
+  tokenCli String @default(cuid())
   role     Roles
 
   createdAt      DateTime      @default(now())

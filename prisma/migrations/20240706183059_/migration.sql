@@ -1,23 +1,61 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "Roles" AS ENUM ('USER', 'ADMIN');
 
-  - You are about to drop the column `LinkdinId` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the `question` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `quiz` table. If the table is not empty, all the data it contains will be lost.
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "userName" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "isVerified" BOOLEAN NOT NULL DEFAULT false,
+    "password" TEXT NOT NULL,
+    "bio" TEXT,
+    "image" TEXT,
+    "githubId" TEXT,
+    "linkdinId" TEXT,
+    "portfolio" TEXT,
+    "portfolioSiteId" TEXT,
+    "token" TEXT NOT NULL,
+    "tokenCli" TEXT NOT NULL,
+    "role" "Roles" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userSettingsId" TEXT NOT NULL,
 
-*/
--- DropForeignKey
-ALTER TABLE "question" DROP CONSTRAINT "question_quizId_fkey";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "LinkdinId",
-ADD COLUMN     "linkdinId" TEXT;
+-- CreateTable
+CREATE TABLE "UserSettings" (
+    "id" TEXT NOT NULL,
+    "publicProfile" BOOLEAN NOT NULL DEFAULT true,
+    "publicPortfolio" BOOLEAN NOT NULL DEFAULT true,
+    "publicBio" BOOLEAN NOT NULL DEFAULT true,
+    "publicEmail" BOOLEAN NOT NULL DEFAULT true,
+    "publicGithub" BOOLEAN NOT NULL DEFAULT true,
+    "publicLinkdin" BOOLEAN NOT NULL DEFAULT true,
+    "publicProjects" BOOLEAN NOT NULL DEFAULT true,
+    "publicCourses" BOOLEAN NOT NULL DEFAULT true,
+    "emailsSubscriptionId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- DropTable
-DROP TABLE "question";
+    CONSTRAINT "UserSettings_pkey" PRIMARY KEY ("id")
+);
 
--- DropTable
-DROP TABLE "quiz";
+-- CreateTable
+CREATE TABLE "EmailsSubscription" (
+    "id" TEXT NOT NULL,
+    "courseUpdates" BOOLEAN NOT NULL DEFAULT true,
+    "quizUpdates" BOOLEAN NOT NULL DEFAULT true,
+    "announcements" BOOLEAN NOT NULL DEFAULT true,
+    "SecurityFeatures" BOOLEAN NOT NULL DEFAULT true,
+    "ProductUpgrades" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "EmailsSubscription_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "UserCourse" (
@@ -90,6 +128,22 @@ CREATE TABLE "Question" (
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "PortfolioSiteIds" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "siteSubUrl" TEXT NOT NULL,
+
+    CONSTRAINT "PortfolioSiteIds_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_userName_key" ON "User"("userName");
+
 -- CreateIndex
 CREATE UNIQUE INDEX "UserCourse_userId_courseId_key" ON "UserCourse"("userId", "courseId");
 
@@ -98,6 +152,12 @@ CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserQuiz_userId_quizId_key" ON "UserQuiz"("userId", "quizId");
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_userSettingsId_fkey" FOREIGN KEY ("userSettingsId") REFERENCES "UserSettings"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserSettings" ADD CONSTRAINT "UserSettings_emailsSubscriptionId_fkey" FOREIGN KEY ("emailsSubscriptionId") REFERENCES "EmailsSubscription"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserCourse" ADD CONSTRAINT "UserCourse_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
